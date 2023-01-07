@@ -125,7 +125,9 @@ func (p *Parser) parseLetStatement() *ast.LetStatement {
 		return nil
 	}
 
-	// TODO: 세미콜론을 만날 때까지 표현식을 건너뛴다.
+	p.nextToken()
+
+	stmt.Value = p.parseExpression(LOWEST)
 	for !p.curTokenIs(token.SEMICOLON) {
 		p.nextToken()
 	}
@@ -137,7 +139,8 @@ func (p *Parser) parseReturnStatement() *ast.ReturnStatement {
 	stmt := &ast.ReturnStatement{Token: p.curToken}
 	p.nextToken()
 
-	// TODO: 세미콜론을 만날 때까지 표현식을 건너뛴다.
+	stmt.ReturnValue = p.parseExpression(LOWEST)
+
 	for !p.curTokenIs(token.SEMICOLON) {
 		p.nextToken()
 	}
